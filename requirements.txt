@@ -1,0 +1,11 @@
+# Core training and image processing
+torch
+torchvision
+numpy
+matplotlib
+opencv-python
+Pillow
+
+# Notebook workflow
+jupyter
+ipykernel
