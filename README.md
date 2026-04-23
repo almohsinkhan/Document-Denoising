@@ -71,7 +71,8 @@ Training is done inside `pipline.ipynb`.
 * U-Net with combined loss (`MSE + L1`)
 * **Attention U-Net (final model)**
 
-![Attention U-Net Architecture](architecture.png)
+<img width="1536" height="1024" alt="ChatGPT Image Apr 23, 2026, 03_19_08 PM" src="https://github.com/user-attachments/assets/5d6ba18d-c33d-478a-b291-bf81a3e4c676" />
+
 
 ### Loss Function
 
@@ -133,7 +134,8 @@ http://localhost:8000
 
 ## 🔁 Inference Pipeline
 
-![Inference Pipeline Flowchart](pipeline.png)
+<img width="1149" height="1369" alt="ChatGPT Image Apr 23, 2026, 03_19_00 PM" src="https://github.com/user-attachments/assets/9051a10b-0c15-4d69-99bb-6631ba5b8c0c" />
+
 
 1. Upload image via browser
 2. Convert to grayscale
