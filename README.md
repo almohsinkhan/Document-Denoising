@@ -1,93 +1,199 @@
-# Document Denoising
+# 📄 Document Denoising using Attention U-Net
 
-This project trains convolutional encoder-decoder models to remove noise from grayscale document images. The current workflow lives in the notebook `pipline.ipynb`, where the dataset is loaded, multiple U-Net variants are trained, and denoised outputs are visualized.
+This project focuses on removing noise from grayscale document images using deep learning. It includes model training (via notebook) and a deployed inference pipeline using a web API and browser-based interface.
 
-## Overview
+---
 
-- Goal: restore noisy document scans to cleaner grayscale versions
-- Input data: paired noisy and clean images stored in `data/train` and `data/train_cleaned`
-- Dataset size in this repo: 144 noisy images and 144 matching clean images
-- Image preprocessing: grayscale conversion, resize to `128 x 128`, tensor conversion
-- Validation split: `80/20` with a fixed seed
-- Saved checkpoint: `best_model_v2.pth`
+## 🚀 Overview
 
-The notebook experiments with:
+* **Goal:** Restore noisy document scans into clean, readable images
+* **Model:** Attention U-Net (encoder-decoder architecture)
+* **Input:** Noisy grayscale images
+* **Output:** Denoised grayscale images
 
-- A baseline U-Net trained with `MSELoss`
-- An improved U-Net using a combined `MSE + L1` loss
-- Attention U-Net variants for stronger skip-connection feature selection
+---
 
-## Project Structure
+## 🧠 Key Features
+
+* Deep learning-based document enhancement
+* Attention U-Net for improved feature selection
+* End-to-end pipeline: training → inference → web interface
+* FastAPI backend for real-time denoising
+* Browser UI with before/after comparison
+
+---
+
+## 📁 Project Structure
 
 ```text
 Document-Denoising/
-├── best_model_v2.pth
-├── pipline.ipynb
+├── app.py                  # FastAPI inference server
+├── best_model_v2.pth       # Trained model weights
+├── extracted_code.py       # Standalone inference and model definitions
+├── pipline.ipynb           # Training notebook
 ├── requirements.txt
 ├── README.md
+├── static/
+│   └── index.html          # Frontend UI
 └── data/
-    ├── sampleSubmission.csv
     ├── train/
     └── train_cleaned/
 ```
 
-## Requirements
+---
 
-- Python 3.10+
-- `pip`
-- Optional but recommended: a virtual environment
-- Optional: CUDA-enabled GPU for faster training
+## 📊 Dataset
 
-## Setup
+* **Type:** Paired dataset (noisy → clean)
+* **Size:** 144 image pairs
+* **Format:** Grayscale images
+
+```
+data/train/           → noisy images  
+data/train_cleaned/   → clean images  
+```
+
+---
+
+## ⚙️ Training Details
+
+Training is done inside `pipline.ipynb`.
+
+### Preprocessing
+
+* Convert to grayscale
+* Resize to **256 × 256**
+* Convert to tensor
+
+### Models Used
+
+* Baseline U-Net
+* U-Net with combined loss (`MSE + L1`)
+* **Attention U-Net (final model)**
+
+![Attention U-Net Architecture](architecture.png)
+
+### Loss Function
+
+```text
+Loss = MSE + 0.5 × L1
+```
+
+### Training Config
+
+* Epochs: 10
+* Train/Validation split: 80/20
+* Best model saved as: `best_model_v2.pth`
+
+---
+
+## 🧪 Run Training
 
 ```bash
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-```
-
-To work in the notebook:
-
-```bash
 jupyter notebook
 ```
 
-Then open `pipline.ipynb`.
+Then open:
 
-## Workflow In The Notebook
+```
+pipline.ipynb
+```
 
-The notebook currently follows this sequence:
+---
 
-1. Import dependencies and detect the available device (`cuda` or `cpu`).
-2. Build a custom `DocumentDataset` that pairs files from `data/train` and `data/train_cleaned`.
-3. Apply transforms:
-   - convert to grayscale
-   - resize to `128 x 128`
-   - convert to tensor
-4. Split the dataset into training and validation sets.
-5. Train several model variants for `10` epochs.
-6. Save the best-performing model weights to `best_model_v2.pth`.
-7. Visualize noisy inputs, predictions, binary outputs, and ground-truth images.
+## 🌐 Inference (Web App)
 
-## Running Training
+The project includes a real-time inference pipeline using **FastAPI**.
 
-Training is notebook-based right now, so the simplest way to run the project is:
+### Run the server
 
-1. Install dependencies.
-2. Launch Jupyter.
-3. Open `pipline.ipynb`.
-4. Run the cells in order.
+```bash
+uvicorn app:app --reload
+```
 
-## Notes
+### Open in browser
 
-- The notebook filename is currently `pipline.ipynb` in the repository.
-- The code uses grayscale images only.
-- The best checkpoint filename is reused across notebook experiments, so retraining may overwrite `best_model_v2.pth`.
-- There is no standalone training or inference script yet; the notebook is the source of truth for the workflow.
+```
+http://localhost:8000
+```
 
-## Future Improvements
+---
 
-- Move model definitions and training logic into Python modules
-- Add a standalone inference script for denoising new images
-- Track metrics such as PSNR or SSIM during validation
-- Add argument-based training scripts for reproducibility
+## 🖥️ Web Interface Features
+
+* Upload document image
+* View **original vs denoised** side-by-side
+* Maintains aspect ratio (no pixel distortion)
+* Real-time processing
+
+---
+
+## 🔁 Inference Pipeline
+
+![Inference Pipeline Flowchart](pipeline.png)
+
+1. Upload image via browser
+2. Convert to grayscale
+3. Resize to 256×256
+4. Run model inference
+5. Clamp output to valid range
+6. Resize back to original resolution
+7. Return denoised image
+
+---
+
+## ⚠️ Important Notes
+
+* Model was trained on **256×256 images** → inference must match
+* Output is a **denoised image (not segmentation)**
+* No thresholding or binarization should be applied
+* Use high-quality resizing (`LANCZOS`) for best results
+
+---
+
+## 📈 Future Improvements
+
+* Train on higher resolution images (512×512 or full-size)
+* Add PSNR / SSIM evaluation metrics
+* Integrate OCR (text extraction from cleaned documents)
+* Batch processing for multiple files
+* Deploy API (Render / AWS / Docker)
+* Add before/after slider UI
+
+---
+
+## 🧠 Learning Outcomes
+
+This project demonstrates:
+
+* CNN-based image restoration
+* Attention mechanisms in U-Net
+* ML pipeline debugging (train vs inference mismatch)
+* Backend deployment with FastAPI
+* Full-stack AI application development
+
+---
+
+## 📌 Conclusion
+
+This is a complete **AI-powered document enhancement system**, combining:
+
+* Deep learning
+* Backend engineering
+* Frontend visualization
+
+---
+
+## 👨‍💻 Author
+
+Mohsin Khan
+Backend Developer | AI Enthusiast
+
+---
+
+## ⭐ If you found this useful
+
+Consider improving it further or turning it into a production-ready tool 🚀
