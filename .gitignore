@@ -65,3 +65,6 @@ data/
 *.zip
 *.tar
 *.pth
+
+best_model_v2.pth
+submission/

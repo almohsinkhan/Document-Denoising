@@ -13,6 +13,19 @@ This project focuses on removing noise from grayscale document images using deep
 
 ---
 
+## 🌍 Live Demo & Deployment
+
+* **Hugging Face Space:** [Document Denoising Demo](https://huggingface.co/spaces/almohsinkhan/document-denoising)
+* **Docker Image:** [suspiciousrope8805/document-denoising](https://hub.docker.com/repository/docker/suspiciousrope8805/document-denoising/general)
+
+You can run the Docker image locally using:
+```bash
+docker pull suspiciousrope8805/document-denoising:latest
+docker run -p 8000:8000 suspiciousrope8805/document-denoising:latest
+```
+
+---
+
 ## 🧠 Key Features
 
 * Deep learning-based document enhancement
@@ -162,7 +175,6 @@ http://localhost:8000
 * Add PSNR / SSIM evaluation metrics
 * Integrate OCR (text extraction from cleaned documents)
 * Batch processing for multiple files
-* Deploy API (Render / AWS / Docker)
 * Add before/after slider UI
 
 ---

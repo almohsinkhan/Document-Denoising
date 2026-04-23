@@ -7,6 +7,24 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, Response
 from PIL import Image
 from torchvision import transforms
+import requests
+
+MODEL_PATH = "best_model_v2.pth"
+MODEL_URL = "https://huggingface.co/almohsinkhan/document-denoising-model/resolve/main/best_model_v2.pth"
+
+
+def download_model():
+    if not os.path.exists(MODEL_PATH):
+        print("⬇️ Downloading model...")
+        response = requests.get(MODEL_URL, stream=True)
+
+        with open(MODEL_PATH, "wb") as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                f.write(chunk)
+
+        print("✅ Model downloaded!")
+    else:
+        print("✅ Model already exists")
 
 
 class AttentionBlock(nn.Module):
@@ -115,7 +133,7 @@ app = FastAPI()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = AttentionUNet().to(device)
 
-MODEL_PATH = "best_model_v2.pth"
+download_model()
 model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
 model.eval()
 

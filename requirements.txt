@@ -1,11 +1,7 @@
-# Core training and image processing
-torch
-torchvision
-numpy
-matplotlib
-opencv-python
-Pillow
-
-# Notebook workflow
-jupyter
-ipykernel
+torch --index-url https://download.pytorch.org/whl/cpu
+torchvision --index-url https://download.pytorch.org/whl/cpu
+fastapi
+uvicorn
+python-multipart
+pillow
+requests
